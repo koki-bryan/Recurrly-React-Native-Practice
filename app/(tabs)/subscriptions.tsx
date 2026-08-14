@@ -4,12 +4,12 @@ import { Text } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 
 const SafeAreaView = styled(RNSafeAreaView);
-const settings = () => {
+const subscriptions = () => {
   return (
     <SafeAreaView>
-      <Text>settings</Text>
+      <Text>subscriptions</Text>
     </SafeAreaView>
   );
 };
 
-export default settings;
+export default subscriptions;
