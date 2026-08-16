@@ -51,7 +51,9 @@
             "./assets/fonts/PlusjakartaSans-Light.ttf"
           ]
         }
-      ]
+      ],
+      "@clerk/expo",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,
