@@ -1,9 +1,11 @@
 import { tabs } from "@/constants/data";
 import { colors, components } from "@/constants/theme";
 import clsx from "clsx";
-import { Tabs } from "expo-router";
+import { SplashScreen, Tabs } from "expo-router";
 import { Image, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+SplashScreen.preventAutoHideAsync();
 
 const tabBar = components.tabBar;
 
