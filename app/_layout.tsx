@@ -1,7 +1,40 @@
 import "@/global.css";
+import { ClerkProvider, useAuth } from "@clerk/expo";
+import { tokenCache } from "@clerk/expo/token-cache";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+
+if (!publishableKey) {
+  throw new Error(
+    "Missing EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY — add it to your .env.local file",
+  );
+}
+
+SplashScreen.preventAutoHideAsync();
+
+function RootNavigator({ fontsLoaded }: { fontsLoaded: boolean }) {
+  const { isLoaded: authLoaded } = useAuth();
+
+  useEffect(() => {
+    if (fontsLoaded && authLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded, authLoaded]);
+
+  // Keep splash visible until both are ready
+  if (!fontsLoaded || !authLoaded) return null;
+
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="(auth)" />
+      <Stack.Screen name="(tabs)" />
+    </Stack>
+  );
+}
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -13,15 +46,9 @@ export default function RootLayout() {
     "sans-light": require("../assets/fonts/PlusJakartaSans-Light.ttf"),
   });
 
-  useEffect(() => {
-    if (fontsLoaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) return null;
-
   return (
-    <Stack screenOptions={{ headerShown: false }} initialRouteName="(tabs)" />
+    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+      <RootNavigator fontsLoaded={fontsLoaded} />
+    </ClerkProvider>
   );
 }
